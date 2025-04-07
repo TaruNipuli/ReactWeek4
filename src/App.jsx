@@ -1,14 +1,12 @@
 import React from 'react';
 import './App.css';
-import Greeting from './Greeting';
+import Home from './components/Home';
 
 const App = () => {
   return (
     <>
       <h1>My App</h1>
-      <Greeting name="John" />
-      <Greeting name="Alice" />
-      <Greeting name="123" />
+      <Home />
     </>
   );
 };
