@@ -25,7 +25,7 @@ const SingleView = (props) => {
         <p>{item.description}</p>
       </dialog>
       )}
-
+      
       </>
     );
   };
