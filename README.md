@@ -1,6 +1,6 @@
 # React + Vite
 
-[Linkki tehtävään](https://users.metropolia.fi/~tarunip/reactRouting/dist/)
+[Linkki tehtävään](https://users.metropolia.fi/~tarunip/reactHooks/dist/)
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
