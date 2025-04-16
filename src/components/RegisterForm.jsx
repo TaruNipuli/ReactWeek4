@@ -1,9 +1,11 @@
 import {useUser} from '../hooks/apiHooks';
 import useForm from '../hooks/formHooks';
+import {useNavigate} from 'react-router';
 
 // RegisterForm.jsx
 const RegisterForm = () => {
   const {postUser} = useUser();
+  const navigate = useNavigate();
 
   const initValues = {
     username: '',
@@ -17,6 +19,7 @@ const RegisterForm = () => {
     // TODO: add Register functionalities here
     const userResult = await postUser(inputs);
     console.log(userResult);
+    navigate('/');
   };
 
   const {inputs, handleInputChange, handleSubmit} = useForm(
