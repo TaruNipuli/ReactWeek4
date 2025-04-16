@@ -18,7 +18,7 @@ const UserProvider = ({ children }) => {
             // TODO: set token to local storage
             // TODO: set user to state
             // TODO: navigate to home
-            const response = await postLogin(credentials);
+            const loginResult = await postLogin(credentials);
             localStorage.setItem('token', loginResult.token);
             setUser(loginResult.user);
             navigate('/');
