@@ -20,6 +20,7 @@ const useMedia = () => {
         ),
       );
 
+      // duplikaattien poisto on tehtävänannon ulkopuolella, ei tarvitse toteuttaa
       const userMap = userData.reduce((map, {user_id, username}) => {
         map[user_id] = username;
         return map;
@@ -52,16 +53,10 @@ const useAuthentication = () => {
       },
       body: JSON.stringify(inputs),
     };
-    const loginResult = await fetchData(
+    return await fetchData(
       import.meta.env.VITE_AUTH_API + '/auth/login',
       fetchOptions,
     );
-
-    console.log('loginResult', loginResult.token);
-
-    window.localStorage.setItem('token', loginResult.token);
-
-    return loginResult;
   };
 
   return {postLogin};
