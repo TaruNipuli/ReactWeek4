@@ -1,13 +1,41 @@
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 import PropTypes from 'prop-types';
-import {useAuthentication} from '../hooks/apiHooks';
+import { useAuthentication } from '../hooks/apiHooks';
+import { useNavigate } from 'react-router-dom';
+import { useMedia} from '../hooks/apiHooks';
 
 const MediaRow = (props) => {
-  const {isLoggedIn} = useAuthentication();
-  const {item, setSelectedItem} = props;
+  const { isLoggedIn } = useAuthentication();
+  const { item, setSelectedItem } = props;
+  const { deleteMedia, modifyMedia } = useMedia();
+  const navigate = useNavigate();
 
-  const handleClick = () => {
-    setSelectedItem(item);
+  const handleModify = async () => {
+    try {
+      console.log('Modifying media:', item);
+      await modifyMedia(
+        {
+          id: item.media_id,
+          title: 'Updated Title',
+          description: item.description,
+          media_type: item.media_type,
+        },
+        localStorage.getItem('token')
+      );
+      navigate(0); // Refresh the page
+    } catch (error) {
+      console.error('Error modifying media:', error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      console.log('Deleting media:', item);
+      await deleteMedia(item.media_id, localStorage.getItem('token'));
+      navigate(0);
+    } catch (error) {
+      console.error('Error deleting media:', error);
+    }
   };
 
   return (
@@ -27,19 +55,12 @@ const MediaRow = (props) => {
       <td>{item.media_type}</td>
       <td className="p-0!">
         <div className="flex gap-2 *:p-2">
-          {/* <button
-          className="hover:bg-amber-300 hover:text-gray-900 p-8"
-          onClick={handleClick}
-        >
-          View
-        </button> */}
           <Link
             to="/single"
-            state={{item}}
+            state={{ item }}
             className="hover:bg-emerald-700 hover:text-gray-900"
             onClick={(event) => {
               event.preventDefault();
-
               setSelectedItem(item);
             }}
           >
@@ -51,18 +72,14 @@ const MediaRow = (props) => {
               <button
                 type="button"
                 className="hover:bg-sky-400 hover:text-black"
-                onClick={() => {
-                  console.log('edit button clicked');
-                }}
+                onClick={handleModify}
               >
-                Edit
+                Modify
               </button>
               <button
                 type="button"
-                className="hover:bg-red-500"
-                onClick={() => {
-                  console.log('delete button clicked');
-                }}
+                className="hover:bg-red-500 hover:text-black"
+                onClick={handleDelete}
               >
                 Delete
               </button>

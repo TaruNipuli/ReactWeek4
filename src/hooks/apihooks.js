@@ -169,4 +169,90 @@ const useFile = () => {
   return {postFile};
 };
 
-export {useMedia, useAuthentication, useUser, useFile};
+const useLike = () => {
+  const postLike = async (mediaId) => {
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({media_id: mediaId}),
+    };
+
+    try {
+      const response = await fetch(`${mediaApiUrl}/likes`, fetchOptions);
+      if (!response.ok) {
+        throw new Error('Failed to post like');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error posting like:', error);
+      throw error;
+    }
+  };
+
+  const deleteLike = async (mediaId) => {
+    const fetchOptions = {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    };
+
+    try {
+      const response = await fetch(
+        `${mediaApiUrl}/likes/${mediaId}`,
+        fetchOptions,
+      );
+      if (!response.ok) {
+        throw new Error('Failed to delete like');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error deleting like:', error);
+      throw error;
+    }
+  };
+
+  const getLikesByMediaId = async (mediaId) => {
+    try {
+      const response = await fetch(`${mediaApiUrl}/likes/file/${mediaId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch likes by media ID');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching likes by media ID:', error);
+      throw error;
+    }
+  };
+
+  const getLikesByUser = async () => {
+    const fetchOptions = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    };
+
+    try {
+      const response = await fetch(`${mediaApiUrl}/likes`, fetchOptions);
+      if (!response.ok) {
+        throw new Error('Failed to fetch likes by user');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching likes by user:', error);
+      throw error;
+    }
+  };
+
+  return {
+    postLike,
+    deleteLike,
+    getLikesByMediaId,
+    getLikesByUser,
+  };
+};
+
+export {useMedia, useAuthentication, useUser, useFile, useLike};
